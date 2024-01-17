@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package RemoteTestSite;
+
+import "proto/join.proto";
+import "proto/measurement.proto";
+import "proto/update.proto";
+import "proto/response.proto";
+
+/* Functions for this message*/
+enum FunctionType {
+  FUNCTION_TYPE_UNSPECIFIED = 0;
+  FUNCTION_TYPE_JOIN = 1;
+  FUNCTION_TYPE_MEASUREMENT = 2;
+  FUNCTION_TYPE_UPDATE = 3;
+  FUNCTION_TYPE_PING = 4;
+  FUNCTION_TYPE_RESPONSE = 5;
+}
+
+message Message {
+  /* Id is used to determine which node is being communicated with.
+  Protobuf prefers id as string but Nanopb prefers a known size */
+  optional uint64 id = 1;
+
+  /* Fields used with specific types */
+  oneof function_info {
+    Join join = 3;
+    Measurement measurement = 4;
+    Update update = 5;
+    Response response = 6;
+  }
+}
