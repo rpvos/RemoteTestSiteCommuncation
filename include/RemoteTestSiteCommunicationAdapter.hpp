@@ -9,14 +9,14 @@ class RemoteTestSiteCommunicationAdapter
 public:
     RemoteTestSiteCommunicationAdapter(IRemoteTestSiteController *const controller);
 
-    pb_ostream_t CreateOutputStream(uint8_t *const message_buffer);
+    pb_ostream_t CreateOutputStream(uint8_t *const message_buffer, const size_t message_buffer_size);
     bool EncodeJoin(pb_ostream_t *const stream, const uint64_t destination_id, uint64_t new_id);
     bool EncodeMeasurement(pb_ostream_t *const stream, const uint64_t destination_id, const RemoteTestSite_MeasurementType type, const float value);
     bool EncodeUpdate(pb_ostream_t *const stream, const uint64_t destination_id, const RemoteTestSite_MeasurementType type, const RemoteTestSite_Timestamp frequency);
     bool EncodePing(pb_ostream_t *const stream, const uint64_t destination_id);
     bool EncodeResponse(pb_ostream_t *const stream, const uint64_t destination_id, const RemoteTestSite_ResponseCode code);
 
-    pb_istream_t CreateInputStream(const uint16_t *const message_buffer, const size_t message_length);
+    pb_istream_t CreateInputStream(const uint8_t *const message_buffer, const size_t message_length);
     bool HandleMessage(pb_istream_t *const stream);
 
     void SetId(uint64_t new_id);

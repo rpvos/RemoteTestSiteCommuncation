@@ -11,10 +11,10 @@
 
 /* Enum definitions */
 typedef enum _RemoteTestSite_ResponseCode {
-    RemoteTestSite_ResponseCode_ERROR_CODE_UNSPECIFIED = 0,
-    RemoteTestSite_ResponseCode_ERROR_CODE_OK = 1,
-    RemoteTestSite_ResponseCode_ERROR_CODE_UNEXPECTED_PARAMETER = 2,
-    RemoteTestSite_ResponseCode_ERROR_CODE_INVALLID_PARAMETER = 3
+    RemoteTestSite_ResponseCode_RESPONSE_CODE_UNSPECIFIED = 0,
+    RemoteTestSite_ResponseCode_RESPONSE_CODE_OK = 1,
+    RemoteTestSite_ResponseCode_RESPONSE_CODE_UNEXPECTED_PARAMETER = 2,
+    RemoteTestSite_ResponseCode_RESPONSE_CODE_INVALLID_PARAMETER = 3
 } RemoteTestSite_ResponseCode;
 
 /* Struct definitions */
@@ -29,9 +29,9 @@ extern "C" {
 #endif
 
 /* Helper constants for enums */
-#define _RemoteTestSite_ResponseCode_MIN RemoteTestSite_ResponseCode_ERROR_CODE_UNSPECIFIED
-#define _RemoteTestSite_ResponseCode_MAX RemoteTestSite_ResponseCode_ERROR_CODE_INVALLID_PARAMETER
-#define _RemoteTestSite_ResponseCode_ARRAYSIZE ((RemoteTestSite_ResponseCode)(RemoteTestSite_ResponseCode_ERROR_CODE_INVALLID_PARAMETER+1))
+#define _RemoteTestSite_ResponseCode_MIN RemoteTestSite_ResponseCode_RESPONSE_CODE_UNSPECIFIED
+#define _RemoteTestSite_ResponseCode_MAX RemoteTestSite_ResponseCode_RESPONSE_CODE_INVALLID_PARAMETER
+#define _RemoteTestSite_ResponseCode_ARRAYSIZE ((RemoteTestSite_ResponseCode)(RemoteTestSite_ResponseCode_RESPONSE_CODE_INVALLID_PARAMETER+1))
 
 #define RemoteTestSite_Response_response_code_ENUMTYPE RemoteTestSite_ResponseCode
 

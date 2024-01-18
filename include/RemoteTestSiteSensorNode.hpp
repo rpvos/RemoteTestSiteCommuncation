@@ -1,5 +1,5 @@
-#ifndef REMOTE_TEST_SITE_SENSOR_HPP_
-#define REMOTE_TEST_SITE_SENSOR_HPP_
+#ifndef REMOTE_TEST_SITE_SENSOR_NODE_HPP_
+#define REMOTE_TEST_SITE_SENSOR_NODE_HPP_
 
 #include "IRemoteTestSiteController.hpp"
 #include "RemoteTestSiteCommunicationAdapter.hpp"
@@ -7,7 +7,7 @@
 class RemoteTestSiteSensorNode : IRemoteTestSiteController
 {
 public:
-    RemoteTestSiteSensorNode() : communication_adapter(this);
+    RemoteTestSiteSensorNode();
 
     /// @brief Implementation for setting id to new id
     /// @param new_id is used from now on by this node
@@ -17,4 +17,4 @@ public:
     RemoteTestSiteCommunicationAdapter communication_adapter;
 };
 
-#endif // #ifndef REMOTE_TEST_SITE_SENSOR_HPP_
+#endif // #ifndef REMOTE_TEST_SITE_SENSOR_NODE_HPP_

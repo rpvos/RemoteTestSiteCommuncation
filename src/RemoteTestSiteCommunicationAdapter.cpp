@@ -4,6 +4,8 @@
 #include <pb_decode.h>
 #include <pb_common.h>
 
+#include <Arduino.h>
+
 RemoteTestSiteCommunicationAdapter::RemoteTestSiteCommunicationAdapter(IRemoteTestSiteController *const controller)
 {
     this->controller = controller;
@@ -11,9 +13,13 @@ RemoteTestSiteCommunicationAdapter::RemoteTestSiteCommunicationAdapter(IRemoteTe
     this->id = 0;
 }
 
-pb_ostream_t RemoteTestSiteCommunicationAdapter::CreateOutputStream(uint8_t *const message_buffer)
+pb_ostream_t RemoteTestSiteCommunicationAdapter::CreateOutputStream(uint8_t *const message_buffer, const size_t message_buffer_size)
 {
-    return pb_ostream_from_buffer(message_buffer, sizeof(message_buffer));
+    return pb_ostream_from_buffer(message_buffer, message_buffer_size);
+}
+pb_istream_t RemoteTestSiteCommunicationAdapter::CreateInputStream(const uint8_t *const message_buffer, const size_t message_length)
+{
+    return pb_istream_from_buffer(message_buffer, message_length);
 }
 
 bool RemoteTestSiteCommunicationAdapter::EncodeBaseMessage(pb_ostream_t *const stream, const uint64_t destination_id)
@@ -23,20 +29,11 @@ bool RemoteTestSiteCommunicationAdapter::EncodeBaseMessage(pb_ostream_t *const s
     message.sender_id = this->id;
     message.has_sender_id = true;
 
-    // EncodeJoin(&stream, 2);
-    // EncodeMeasurement(&stream, RemoteTestSite_MeasurementType_MEASUREMENT_TYPE_TEMPERATURE, 17.1);
-    // RemoteTestSite_Timestamp timestamp = RemoteTestSite_Timestamp_init_zero;
-    // timestamp.seconds = 123;
-    // timestamp.nanos = 456;
-    // EncodeUpdate(&stream, RemoteTestSite_MeasurementType_MEASUREMENT_TYPE_TEMPERATURE, timestamp);
-    // EncodePing(&stream);
-    // EncodeResponse(&stream, RemoteTestSite_ErrorCode_ERROR_CODE_OK);
-
     /* Encode the message. */
     return pb_encode(stream, RemoteTestSite_Message_fields, &message);
 }
 
-bool RemoteTestSiteCommunicationAdapter::HandleMessage(pb_istream_t *stream)
+bool RemoteTestSiteCommunicationAdapter::HandleMessage(pb_istream_t *const stream)
 {
     RemoteTestSite_Message message = RemoteTestSite_Message_init_zero;
 
@@ -46,9 +43,8 @@ bool RemoteTestSiteCommunicationAdapter::HandleMessage(pb_istream_t *stream)
     /* Check for errors... */
     if (!status)
     {
+        Serial.println("Decode failed");
         return false;
-        // Serial.print("Decoding failed: ");
-        // Serial.println(PB_GET_ERROR(&stream));
     }
 
     /* Check if message is meant for this node */
@@ -67,8 +63,6 @@ bool RemoteTestSiteCommunicationAdapter::HandleMessage(pb_istream_t *stream)
         if (message.function_info.join.has_new_id)
         {
             return this->controller->Join(message.function_info.join.new_id);
-            // Serial.print("Join message new id: ");
-            // Serial.println((int)message.function_info.join.new_id);
         }
 
         break;
@@ -76,30 +70,14 @@ bool RemoteTestSiteCommunicationAdapter::HandleMessage(pb_istream_t *stream)
         if (message.function_info.measurement.has_type && message.function_info.measurement.has_value)
         {
             return this->controller->Measurement(message.function_info.measurement.type, message.function_info.measurement.value);
-            // Serial.print("Measurement of type: ");
-            // Serial.println((int)message.function_info.measurement.type);
-            // Serial.print("Value: ");
-            // Serial.println((float)message.function_info.measurement.value);
         }
 
         break;
     case RemoteTestSite_Message_update_tag:
-        // message.function_info.update.which_UpdateType;
-        // if ()
-        // {
-        //     // TODO: make sitch for update types
-        //     return this->controller->UpdateFrequency(message.function_info.update.type, message.function_info.update.frequency);
-        //     // Serial.print("Update of type: ");
-        //     // Serial.println((int)message.function_info.update.type);
-        //     // Serial.print("Frequency in second:nanoseconds : ");
-        //     // Serial.print((int)message.function_info.update.frequency.seconds);
-        //     // Serial.print(':');
-        //     // Serial.println((int)message.function_info.update.frequency.nanos);
-        // }
-
+        // TODO: make sitch for update types
+        return this->controller->UpdateFrequency(message.function_info.update.UpdateType.update_frequency.type, message.function_info.update.UpdateType.update_frequency.frequency);
         break;
     case RemoteTestSite_Message_ping_tag:
-        // Serial.println("Ping received.");
         return this->controller->Ping(message.sender_id);
 
         break;
@@ -107,23 +85,12 @@ bool RemoteTestSiteCommunicationAdapter::HandleMessage(pb_istream_t *stream)
         if (message.function_info.response.has_response_code)
         {
             return controller->Response(message.function_info.response.response_code);
-            // if ((int)message.function_info.response.error_code == RemoteTestSite_ErrorCode::RemoteTestSite_ErrorCode_ERROR_CODE_OK)
-            // {
-            //     Serial.println("Response OK");
-            // }
-            // else
-            // {
-            //     Serial.print("Error code: ");
-            //     Serial.println((int)message.function_info.response.error_code);
-            // }
         }
 
         break;
 
     default:
         return this->controller->UnknownMessageType(message.which_function_info);
-        // Serial.print("Function unknown: ");
-        // Serial.println((int)message.which_function_info);
         break;
     }
     return false;
@@ -136,7 +103,11 @@ void RemoteTestSiteCommunicationAdapter::SetId(uint64_t new_id)
 
 bool RemoteTestSiteCommunicationAdapter::EncodeJoin(pb_ostream_t *const stream, const uint64_t destination_id, uint64_t new_id)
 {
-    EncodeBaseMessage(stream, destination_id);
+    bool status = EncodeBaseMessage(stream, destination_id);
+    if (!status)
+    {
+        return false;
+    }
 
     /* Create join message type. */
     RemoteTestSite_Join join = RemoteTestSite_Join_init_zero;
@@ -166,17 +137,23 @@ bool RemoteTestSiteCommunicationAdapter::EncodeUpdate(pb_ostream_t *const stream
 
     /* Create update message type. */
     RemoteTestSite_Update update = RemoteTestSite_Update_init_zero;
-    update.type = type;
-    update.has_type = true;
-    update.frequency = frequency;
-    update.has_frequency = true;
+    RemoteTestSite_UpdateFrequency update_frequency = RemoteTestSite_UpdateFrequency_init_zero;
+    update_frequency.type = type;
+    update_frequency.has_type = true;
+    update_frequency.frequency = frequency;
+    update_frequency.has_frequency = true;
+    EncodeUnionmessage(stream, RemoteTestSite_UpdateFrequency_fields, &update_frequency);
 
     return EncodeUnionmessage(stream, RemoteTestSite_Update_fields, &update);
 }
 
 bool RemoteTestSiteCommunicationAdapter::EncodePing(pb_ostream_t *const stream, const uint64_t destination_id)
 {
-    EncodeBaseMessage(stream, destination_id);
+    bool status = EncodeBaseMessage(stream, destination_id);
+    if (!status)
+    {
+        return false;
+    }
 
     /* Create ping message type. */
     RemoteTestSite_Ping ping = RemoteTestSite_Ping_init_zero;
@@ -198,6 +175,7 @@ bool RemoteTestSiteCommunicationAdapter::EncodeResponse(pb_ostream_t *const stre
 
 bool RemoteTestSiteCommunicationAdapter::EncodeUnionmessage(pb_ostream_t *stream, const pb_msgdesc_t *messagetype, void *message)
 {
+
     pb_field_iter_t iter;
 
     if (!pb_field_iter_begin(&iter, RemoteTestSite_Message_fields, message))
@@ -209,7 +187,9 @@ bool RemoteTestSiteCommunicationAdapter::EncodeUnionmessage(pb_ostream_t *stream
         {
             /* This is our field, encode the message using it. */
             if (!pb_encode_tag_for_field(stream, &iter))
+            {
                 return false;
+            }
 
             return pb_encode_submessage(stream, messagetype, message);
         }
