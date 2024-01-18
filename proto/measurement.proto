@@ -3,8 +3,10 @@ syntax = "proto3";
 package RemoteTestSite;
 
 import "proto/measurement_type.proto";
+import "proto/timestamp.proto";
 
 message Measurement {
   optional MeasurementType type = 1;
   optional float value = 2;
+  optional Timestamp timestamp = 3;
 }

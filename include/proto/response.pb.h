@@ -10,18 +10,17 @@
 #endif
 
 /* Enum definitions */
-typedef enum _RemoteTestSite_ErrorCode {
-    RemoteTestSite_ErrorCode_ERROR_CODE_UNSPECIFIED = 0,
-    RemoteTestSite_ErrorCode_ERROR_CODE_OK = 1,
-    RemoteTestSite_ErrorCode_ERROR_CODE_UNEXPECTED_PARAMETER = 2,
-    RemoteTestSite_ErrorCode_ERROR_CODE_INVALLID_PARAMETER = 3
-} RemoteTestSite_ErrorCode;
+typedef enum _RemoteTestSite_ResponseCode {
+    RemoteTestSite_ResponseCode_ERROR_CODE_UNSPECIFIED = 0,
+    RemoteTestSite_ResponseCode_ERROR_CODE_OK = 1,
+    RemoteTestSite_ResponseCode_ERROR_CODE_UNEXPECTED_PARAMETER = 2,
+    RemoteTestSite_ResponseCode_ERROR_CODE_INVALLID_PARAMETER = 3
+} RemoteTestSite_ResponseCode;
 
 /* Struct definitions */
 typedef struct _RemoteTestSite_Response {
-    bool has_error_code;
-    RemoteTestSite_ErrorCode error_code;
-    pb_callback_t error;
+    bool has_response_code;
+    RemoteTestSite_ResponseCode response_code;
 } RemoteTestSite_Response;
 
 
@@ -30,26 +29,24 @@ extern "C" {
 #endif
 
 /* Helper constants for enums */
-#define _RemoteTestSite_ErrorCode_MIN RemoteTestSite_ErrorCode_ERROR_CODE_UNSPECIFIED
-#define _RemoteTestSite_ErrorCode_MAX RemoteTestSite_ErrorCode_ERROR_CODE_INVALLID_PARAMETER
-#define _RemoteTestSite_ErrorCode_ARRAYSIZE ((RemoteTestSite_ErrorCode)(RemoteTestSite_ErrorCode_ERROR_CODE_INVALLID_PARAMETER+1))
+#define _RemoteTestSite_ResponseCode_MIN RemoteTestSite_ResponseCode_ERROR_CODE_UNSPECIFIED
+#define _RemoteTestSite_ResponseCode_MAX RemoteTestSite_ResponseCode_ERROR_CODE_INVALLID_PARAMETER
+#define _RemoteTestSite_ResponseCode_ARRAYSIZE ((RemoteTestSite_ResponseCode)(RemoteTestSite_ResponseCode_ERROR_CODE_INVALLID_PARAMETER+1))
 
-#define RemoteTestSite_Response_error_code_ENUMTYPE RemoteTestSite_ErrorCode
+#define RemoteTestSite_Response_response_code_ENUMTYPE RemoteTestSite_ResponseCode
 
 
 /* Initializer values for message structs */
-#define RemoteTestSite_Response_init_default     {false, _RemoteTestSite_ErrorCode_MIN, {{NULL}, NULL}}
-#define RemoteTestSite_Response_init_zero        {false, _RemoteTestSite_ErrorCode_MIN, {{NULL}, NULL}}
+#define RemoteTestSite_Response_init_default     {false, _RemoteTestSite_ResponseCode_MIN}
+#define RemoteTestSite_Response_init_zero        {false, _RemoteTestSite_ResponseCode_MIN}
 
 /* Field tags (for use in manual encoding/decoding) */
-#define RemoteTestSite_Response_error_code_tag   1
-#define RemoteTestSite_Response_error_tag        2
+#define RemoteTestSite_Response_response_code_tag 1
 
 /* Struct field encoding specification for nanopb */
 #define RemoteTestSite_Response_FIELDLIST(X, a) \
-X(a, STATIC,   OPTIONAL, UENUM,    error_code,        1) \
-X(a, CALLBACK, OPTIONAL, STRING,   error,             2)
-#define RemoteTestSite_Response_CALLBACK pb_default_field_callback
+X(a, STATIC,   OPTIONAL, UENUM,    response_code,     1)
+#define RemoteTestSite_Response_CALLBACK NULL
 #define RemoteTestSite_Response_DEFAULT NULL
 
 extern const pb_msgdesc_t RemoteTestSite_Response_msg;
@@ -58,7 +55,8 @@ extern const pb_msgdesc_t RemoteTestSite_Response_msg;
 #define RemoteTestSite_Response_fields &RemoteTestSite_Response_msg
 
 /* Maximum encoded size of messages (where known) */
-/* RemoteTestSite_Response_size depends on runtime parameters */
+#define REMOTETESTSITE_PROTO_RESPONSE_PB_H_MAX_SIZE RemoteTestSite_Response_size
+#define RemoteTestSite_Response_size             2
 
 #ifdef __cplusplus
 } /* extern "C" */
