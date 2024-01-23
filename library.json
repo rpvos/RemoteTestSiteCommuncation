@@ -30,7 +30,11 @@
     ],
     "examples": [],
     "dependencies": [
-        "nanopb/Nanopb": "^0.4.8"
+        {
+            "owner": "nanopb",
+            "name": "Nanopb",
+            "version": "^0.4.8"
+        }
     ],
     "export": {},
     "scripts": {},
