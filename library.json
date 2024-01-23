@@ -29,13 +29,9 @@
         "RemoteTestSiteBasestation.hpp"
     ],
     "examples": [],
-    "dependencies": [
-        {
-            "owner": "nanopb",
-            "name": "Nanopb",
-            "version": "^0.4.8"
-        }
-    ],
+    "dependencies": {
+        "nanopb/Nanopb": "^0.4.8"
+    },
     "export": {},
     "scripts": {},
     "build": {}
