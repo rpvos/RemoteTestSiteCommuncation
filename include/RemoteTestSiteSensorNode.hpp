@@ -12,7 +12,7 @@ public:
     /// @brief Implementation for setting id to new id
     /// @param new_id is used from now on by this node
     /// @return true if succesfull
-    bool Join(uint64_t new_id);
+    bool Join(uint64_t new_id) override;
 
     RemoteTestSiteCommunicationAdapter communication_adapter;
 };

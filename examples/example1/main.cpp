@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "RemoteTestSiteBasestation.hpp"
+#include "RemoteTestSiteSensorNode.hpp"
 #include "pb_encode.h"
 #include "pb_decode.h"
 

@@ -4,8 +4,6 @@
 #include <pb_decode.h>
 #include <pb_common.h>
 
-#include <Arduino.h>
-
 RemoteTestSiteCommunicationAdapter::RemoteTestSiteCommunicationAdapter(IRemoteTestSiteController *const controller)
 {
     this->controller = controller;
@@ -43,7 +41,6 @@ bool RemoteTestSiteCommunicationAdapter::HandleMessage(pb_istream_t *const strea
     /* Check for errors... */
     if (!status)
     {
-        Serial.println("Decode failed");
         return false;
     }
 
