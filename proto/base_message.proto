@@ -30,19 +30,19 @@ message Message {
 
   /* All possible functions for a message */
   // TODO: Remove function type and rely on type of function info
-  enum FunctionType {
-    FUNCTION_TYPE_UNSPECIFIED = 0;
-    /* Functions used for connection handling (opening and closing) */
-    FUNCTION_TYPE_SYN = 1;
-    FUNCTION_TYPE_ACK = 2;
-    FUNCTION_TYPE_FIN = 3;
+  // enum FunctionType {
+  //   FUNCTION_TYPE_UNSPECIFIED = 0;
+  //   /* Functions used for connection handling (opening and closing) */
+  //   FUNCTION_TYPE_SYN = 1;
+  //   FUNCTION_TYPE_ACK = 2;
+  //   FUNCTION_TYPE_FIN = 3;
 
-    /* Functions used for data transmission */
-    FUNCTION_TYPE_MEASUREMENT = 4;
-    FUNCTION_TYPE_UPDATE = 5;
-    FUNCTION_TYPE_RESPONSE = 6;
-  }
-  optional FunctionType function_type = 6;
+  //   /* Functions used for data transmission */
+  //   FUNCTION_TYPE_MEASUREMENT = 4;
+  //   FUNCTION_TYPE_UPDATE = 5;
+  //   FUNCTION_TYPE_RESPONSE = 6;
+  // }
+  // optional FunctionType function_type = 6;
 
   /* Fields containing info for specific functions */
   oneof function_info {

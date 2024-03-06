@@ -53,8 +53,7 @@ bool ConnectionHandler::Connect(const uint64_t destination)
 
     // Send SYN message
     RemoteTestSite_Message message = RemoteTestSite_Message_init_zero;
-    message.has_function_type = true;
-    message.function_type = RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_SYN;
+    message.which_function_info = RemoteTestSite_Message_syn_tag;
 
     size_t message_size = this->proto_handler->EncodeMessage(buffer, buffer_size, message);
     if (message_size <= 0)
@@ -210,7 +209,7 @@ void ConnectionHandler::WaitForConnection()
         return;
     }
 
-    if (message.function_type == RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_SYN)
+    if (message.which_function_info == RemoteTestSite_Message_syn_tag)
     {
         // Return acknowledgement
         this->destination = message.sender_id;
@@ -233,8 +232,7 @@ bool ConnectionHandler::SendAcknowledgement(uint64_t acknowledgement_number)
 
     // Send ACK message
     RemoteTestSite_Message message = RemoteTestSite_Message_init_zero;
-    message.has_function_type = true;
-    message.function_type = RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_ACK;
+    message.which_function_info = RemoteTestSite_Message_ack_tag;
     message.has_acknowledge_number = true;
     message.acknowledge_number = acknowledgement_number;
 

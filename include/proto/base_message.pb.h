@@ -15,20 +15,6 @@
 #error Regenerate this file with the current version of nanopb generator.
 #endif
 
-/* Enum definitions */
-/* All possible functions for a message */
-typedef enum _RemoteTestSite_Message_FunctionType {
-    RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_UNSPECIFIED = 0,
-    /* Functions used for connection handling (opening and closing) */
-    RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_SYN = 1,
-    RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_ACK = 2,
-    RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_FIN = 3,
-    /* Functions used for data transmission */
-    RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_MEASUREMENT = 4,
-    RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_UPDATE = 5,
-    RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_RESPONSE = 6
-} RemoteTestSite_Message_FunctionType;
-
 /* Struct definitions */
 typedef struct _RemoteTestSite_Message { /* Id is used to determine which node is being communicated with.
 Protobuf prefers id as string but Nanopb prefers a known size */
@@ -49,9 +35,7 @@ session */
     /* Checksum of all previous fields (sender_id, target_id, sequence_number,
  acknowledge_number) */
     bool has_checksum;
-    uint64_t checksum;
-    bool has_function_type;
-    RemoteTestSite_Message_FunctionType function_type;
+    uint32_t checksum;
     pb_size_t which_function_info;
     union {
         RemoteTestSite_Syn syn;
@@ -68,17 +52,9 @@ session */
 extern "C" {
 #endif
 
-/* Helper constants for enums */
-#define _RemoteTestSite_Message_FunctionType_MIN RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_UNSPECIFIED
-#define _RemoteTestSite_Message_FunctionType_MAX RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_RESPONSE
-#define _RemoteTestSite_Message_FunctionType_ARRAYSIZE ((RemoteTestSite_Message_FunctionType)(RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_RESPONSE+1))
-
-#define RemoteTestSite_Message_function_type_ENUMTYPE RemoteTestSite_Message_FunctionType
-
-
 /* Initializer values for message structs */
-#define RemoteTestSite_Message_init_default      {false, 0, false, 0, false, 0, false, 0, false, 0, false, _RemoteTestSite_Message_FunctionType_MIN, 0, {RemoteTestSite_Syn_init_default}}
-#define RemoteTestSite_Message_init_zero         {false, 0, false, 0, false, 0, false, 0, false, 0, false, _RemoteTestSite_Message_FunctionType_MIN, 0, {RemoteTestSite_Syn_init_zero}}
+#define RemoteTestSite_Message_init_default      {false, 0, false, 0, false, 0, false, 0, false, 0, 0, {RemoteTestSite_Syn_init_default}}
+#define RemoteTestSite_Message_init_zero         {false, 0, false, 0, false, 0, false, 0, false, 0, 0, {RemoteTestSite_Syn_init_zero}}
 
 /* Field tags (for use in manual encoding/decoding) */
 #define RemoteTestSite_Message_sender_id_tag     1
@@ -86,7 +62,6 @@ extern "C" {
 #define RemoteTestSite_Message_sequence_number_tag 3
 #define RemoteTestSite_Message_acknowledge_number_tag 4
 #define RemoteTestSite_Message_checksum_tag      5
-#define RemoteTestSite_Message_function_type_tag 6
 #define RemoteTestSite_Message_syn_tag           7
 #define RemoteTestSite_Message_fin_tag           8
 #define RemoteTestSite_Message_ack_tag           9
@@ -100,8 +75,7 @@ X(a, STATIC,   OPTIONAL, UINT64,   sender_id,         1) \
 X(a, STATIC,   OPTIONAL, UINT64,   target_id,         2) \
 X(a, STATIC,   OPTIONAL, UINT64,   sequence_number,   3) \
 X(a, STATIC,   OPTIONAL, UINT64,   acknowledge_number,   4) \
-X(a, STATIC,   OPTIONAL, UINT64,   checksum,          5) \
-X(a, STATIC,   OPTIONAL, UENUM,    function_type,     6) \
+X(a, STATIC,   OPTIONAL, UINT32,   checksum,          5) \
 X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,syn,function_info.syn),   7) \
 X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,fin,function_info.fin),   8) \
 X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,ack,function_info.ack),   9) \
@@ -123,13 +97,8 @@ extern const pb_msgdesc_t RemoteTestSite_Message_msg;
 #define RemoteTestSite_Message_fields &RemoteTestSite_Message_msg
 
 /* Maximum encoded size of messages (where known) */
-#if defined(RemoteTestSite_Update_size)
-union RemoteTestSite_Message_function_info_size_union {char f11[(6 + RemoteTestSite_Update_size)]; char f0[33];};
-#endif
-#if defined(RemoteTestSite_Update_size)
 #define REMOTETESTSITE_PROTO_BASE_MESSAGE_PB_H_MAX_SIZE RemoteTestSite_Message_size
-#define RemoteTestSite_Message_size              (57 + sizeof(union RemoteTestSite_Message_function_info_size_union))
-#endif
+#define RemoteTestSite_Message_size              78
 
 #ifdef __cplusplus
 } /* extern "C" */

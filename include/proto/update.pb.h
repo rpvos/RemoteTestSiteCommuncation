@@ -19,15 +19,10 @@ typedef struct _RemoteTestSite_Update_UpdateFrequency {
     RemoteTestSite_Timestamp frequency;
 } RemoteTestSite_Update_UpdateFrequency;
 
-typedef struct _RemoteTestSite_Update_UpdateFirmware {
-    pb_callback_t data;
-} RemoteTestSite_Update_UpdateFirmware;
-
 typedef struct _RemoteTestSite_Update {
     pb_size_t which_UpdateType;
     union {
-        RemoteTestSite_Update_UpdateFrequency update_frequency;
-        RemoteTestSite_Update_UpdateFirmware update_firmware;
+        RemoteTestSite_Update_UpdateFrequency update_frequency; /* UpdateFirmware update_firmware = 2; */
     } UpdateType;
 } RemoteTestSite_Update;
 
@@ -39,26 +34,20 @@ extern "C" {
 /* Initializer values for message structs */
 #define RemoteTestSite_Update_init_default       {0, {RemoteTestSite_Update_UpdateFrequency_init_default}}
 #define RemoteTestSite_Update_UpdateFrequency_init_default {false, _RemoteTestSite_MeasurementType_MIN, false, RemoteTestSite_Timestamp_init_default}
-#define RemoteTestSite_Update_UpdateFirmware_init_default {{{NULL}, NULL}}
 #define RemoteTestSite_Update_init_zero          {0, {RemoteTestSite_Update_UpdateFrequency_init_zero}}
 #define RemoteTestSite_Update_UpdateFrequency_init_zero {false, _RemoteTestSite_MeasurementType_MIN, false, RemoteTestSite_Timestamp_init_zero}
-#define RemoteTestSite_Update_UpdateFirmware_init_zero {{{NULL}, NULL}}
 
 /* Field tags (for use in manual encoding/decoding) */
 #define RemoteTestSite_Update_UpdateFrequency_type_tag 1
 #define RemoteTestSite_Update_UpdateFrequency_frequency_tag 2
-#define RemoteTestSite_Update_UpdateFirmware_data_tag 1
 #define RemoteTestSite_Update_update_frequency_tag 1
-#define RemoteTestSite_Update_update_firmware_tag 2
 
 /* Struct field encoding specification for nanopb */
 #define RemoteTestSite_Update_FIELDLIST(X, a) \
-X(a, STATIC,   ONEOF,    MESSAGE,  (UpdateType,update_frequency,UpdateType.update_frequency),   1) \
-X(a, STATIC,   ONEOF,    MESSAGE,  (UpdateType,update_firmware,UpdateType.update_firmware),   2)
+X(a, STATIC,   ONEOF,    MESSAGE,  (UpdateType,update_frequency,UpdateType.update_frequency),   1)
 #define RemoteTestSite_Update_CALLBACK NULL
 #define RemoteTestSite_Update_DEFAULT NULL
 #define RemoteTestSite_Update_UpdateType_update_frequency_MSGTYPE RemoteTestSite_Update_UpdateFrequency
-#define RemoteTestSite_Update_UpdateType_update_firmware_MSGTYPE RemoteTestSite_Update_UpdateFirmware
 
 #define RemoteTestSite_Update_UpdateFrequency_FIELDLIST(X, a) \
 X(a, STATIC,   OPTIONAL, UENUM,    type,              1) \
@@ -67,25 +56,17 @@ X(a, STATIC,   OPTIONAL, MESSAGE,  frequency,         2)
 #define RemoteTestSite_Update_UpdateFrequency_DEFAULT NULL
 #define RemoteTestSite_Update_UpdateFrequency_frequency_MSGTYPE RemoteTestSite_Timestamp
 
-#define RemoteTestSite_Update_UpdateFirmware_FIELDLIST(X, a) \
-X(a, CALLBACK, OPTIONAL, BYTES,    data,              1)
-#define RemoteTestSite_Update_UpdateFirmware_CALLBACK pb_default_field_callback
-#define RemoteTestSite_Update_UpdateFirmware_DEFAULT NULL
-
 extern const pb_msgdesc_t RemoteTestSite_Update_msg;
 extern const pb_msgdesc_t RemoteTestSite_Update_UpdateFrequency_msg;
-extern const pb_msgdesc_t RemoteTestSite_Update_UpdateFirmware_msg;
 
 /* Defines for backwards compatibility with code written before nanopb-0.4.0 */
 #define RemoteTestSite_Update_fields &RemoteTestSite_Update_msg
 #define RemoteTestSite_Update_UpdateFrequency_fields &RemoteTestSite_Update_UpdateFrequency_msg
-#define RemoteTestSite_Update_UpdateFirmware_fields &RemoteTestSite_Update_UpdateFirmware_msg
 
 /* Maximum encoded size of messages (where known) */
-/* RemoteTestSite_Update_size depends on runtime parameters */
-/* RemoteTestSite_Update_UpdateFirmware_size depends on runtime parameters */
-#define REMOTETESTSITE_PROTO_UPDATE_PB_H_MAX_SIZE RemoteTestSite_Update_UpdateFrequency_size
-#define RemoteTestSite_Update_UpdateFrequency_size 26
+#define REMOTETESTSITE_PROTO_UPDATE_PB_H_MAX_SIZE RemoteTestSite_Update_size
+#define RemoteTestSite_Update_UpdateFrequency_size 21
+#define RemoteTestSite_Update_size               23
 
 #ifdef __cplusplus
 } /* extern "C" */

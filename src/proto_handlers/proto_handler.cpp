@@ -44,29 +44,26 @@ size_t ProtoHandler::EncodeMessage(OUT uint8_t *data, const size_t data_size, Re
     pb_ostream_t output_stream = this->CreateOutputStream(data, data_size);
 
     /* Encode type of message based on function. */
-    switch (message.function_type)
+    switch (message.which_function_info)
     {
-    case RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_UNSPECIFIED:
-        return false;
-        break;
-    case RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_SYN:
+    case RemoteTestSite_Message_syn_tag:
         // Syn needs new sequence number
         this->sequence_number = GetNewSequenceNumber();
         message.sequence_number = this->sequence_number++;
         break;
-    case RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_ACK:
+    case RemoteTestSite_Message_ack_tag:
         // Nothing has to be done
         break;
-    case RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_FIN:
+    case RemoteTestSite_Message_fin_tag:
         // Nothing has to be done
         break;
-    case RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_MEASUREMENT:
+    case RemoteTestSite_Message_measurement_tag:
         EncodeMeasurement(&output_stream, message.function_info.measurement.type, message.function_info.measurement.value);
         break;
-    case RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_UPDATE:
+    case RemoteTestSite_Message_update_tag:
         EncodeUpdate(&output_stream, message.function_info.update.UpdateType.update_frequency.type, message.function_info.update.UpdateType.update_frequency.frequency);
         break;
-    case RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_RESPONSE:
+    case RemoteTestSite_Message_response_tag:
         EncodeResponse(&output_stream, message.function_info.response.response_code);
         break;
 

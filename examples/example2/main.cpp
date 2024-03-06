@@ -41,8 +41,7 @@ void loop()
 
 #ifdef SensorNode
     RemoteTestSite_Message message = RemoteTestSite_Message_init_zero;
-    message.has_function_type = true;
-    message.function_type = RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_MEASUREMENT;
+    message.which_function_info = RemoteTestSite_Message_measurement_tag;
 
     message.function_info.measurement.has_timestamp = true;
     message.function_info.measurement.has_type = true;

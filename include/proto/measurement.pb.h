@@ -51,7 +51,7 @@ extern const pb_msgdesc_t RemoteTestSite_Measurement_msg;
 
 /* Maximum encoded size of messages (where known) */
 #define REMOTETESTSITE_PROTO_MEASUREMENT_PB_H_MAX_SIZE RemoteTestSite_Measurement_size
-#define RemoteTestSite_Measurement_size          31
+#define RemoteTestSite_Measurement_size          26
 
 #ifdef __cplusplus
 } /* extern "C" */

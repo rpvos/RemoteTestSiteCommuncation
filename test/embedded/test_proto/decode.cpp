@@ -43,11 +43,10 @@ void test_encode_and_decode_measurement(void)
     const int value = 10;
 
     ProtoHandler handler = ProtoHandler(0, 0);
-    const size_t data_size = 128;
+    const size_t data_size = 192;
     uint8_t data[data_size] = {0};
     RemoteTestSite_Message message = RemoteTestSite_Message_init_zero;
-    message.has_function_type = true;
-    message.function_type = RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_MEASUREMENT;
+    message.which_function_info = RemoteTestSite_Message_measurement_tag;
 
     RemoteTestSite_Measurement measurement = RemoteTestSite_Measurement_init_zero;
     measurement.has_value = true;
@@ -61,7 +60,6 @@ void test_encode_and_decode_measurement(void)
     RemoteTestSite_Message message2 = RemoteTestSite_Message_init_zero;
     bool succes2 = handler.DecodeMessage(message2, data, bytes);
     TEST_ASSERT_TRUE(succes2);
-    TEST_ASSERT_EQUAL(RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_MEASUREMENT, message2.function_type);
     TEST_ASSERT_EQUAL(RemoteTestSite_Message_measurement_tag, message2.which_function_info);
     TEST_ASSERT_TRUE(message2.function_info.measurement.has_value);
     TEST_ASSERT_EQUAL(value, message2.function_info.measurement.value);
@@ -70,11 +68,10 @@ void test_encode_and_decode_measurement(void)
 void test_encode_and_decode_syn(void)
 {
     ProtoHandler handler = ProtoHandler(0, 0);
-    const size_t data_size = 128;
+    const size_t data_size = 192;
     uint8_t data[data_size] = {0};
     RemoteTestSite_Message message = RemoteTestSite_Message_init_zero;
-    message.has_function_type = true;
-    message.function_type = RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_SYN;
+    message.which_function_info = RemoteTestSite_Message_syn_tag;
 
     size_t bytes = handler.EncodeMessage(data, data_size, message);
     TEST_ASSERT_TRUE(bytes);
@@ -82,7 +79,7 @@ void test_encode_and_decode_syn(void)
     RemoteTestSite_Message message2 = RemoteTestSite_Message_init_zero;
     bool succes2 = handler.DecodeMessage(message2, data, bytes);
     TEST_ASSERT_TRUE(succes2);
-    TEST_ASSERT_EQUAL(RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_SYN, message2.function_type);
+    TEST_ASSERT_EQUAL(RemoteTestSite_Message_syn_tag, message2.which_function_info);
 }
 
 void test_decode_syn(void)
@@ -93,7 +90,6 @@ void test_decode_syn(void)
     RemoteTestSite_Message message = RemoteTestSite_Message_init_zero;
     bool succes = handler.DecodeMessage(message, syn_message, sizeof(syn_message) / sizeof(syn_message[0]));
     TEST_ASSERT_TRUE(succes);
-    TEST_ASSERT_EQUAL(RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_SYN, message.function_type);
 }
 
 void setup()

@@ -67,8 +67,7 @@ bool ProtoHelper::AddCrc(uint8_t *buffer, const uint8_t buffer_size, RemoteTestS
 bool ProtoHelper::EncodeMeasurement(pb_ostream_t *const stream, const RemoteTestSite_MeasurementType type, const float value)
 {
     RemoteTestSite_Message message = RemoteTestSite_Message_init_zero;
-    message.has_function_type = true;
-    message.function_type = RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_MEASUREMENT;
+    message.which_function_info = RemoteTestSite_Message_measurement_tag;
     EncodeBaseMessage(stream, message);
 
     /* Create measurement message type. */
@@ -84,8 +83,7 @@ bool ProtoHelper::EncodeMeasurement(pb_ostream_t *const stream, const RemoteTest
 bool ProtoHelper::EncodeUpdate(pb_ostream_t *const stream, const RemoteTestSite_MeasurementType type, const RemoteTestSite_Timestamp frequency)
 {
     RemoteTestSite_Message message = RemoteTestSite_Message_init_zero;
-    message.has_function_type = true;
-    message.function_type = RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_UPDATE;
+    message.which_function_info = RemoteTestSite_Message_update_tag;
     EncodeBaseMessage(stream, message);
 
     /* Create update message type. */
@@ -103,8 +101,7 @@ bool ProtoHelper::EncodeUpdate(pb_ostream_t *const stream, const RemoteTestSite_
 bool ProtoHelper::EncodeResponse(pb_ostream_t *const stream, const RemoteTestSite_ResponseCode code)
 {
     RemoteTestSite_Message message = RemoteTestSite_Message_init_zero;
-    message.has_function_type = true;
-    message.function_type = RemoteTestSite_Message_FunctionType_FUNCTION_TYPE_RESPONSE;
+    message.which_function_info = RemoteTestSite_Message_response_tag;
     EncodeBaseMessage(stream, message);
 
     /* Create response message type. */

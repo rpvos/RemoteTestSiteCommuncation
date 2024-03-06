@@ -12,7 +12,4 @@ PB_BIND(RemoteTestSite_Update, RemoteTestSite_Update, AUTO)
 PB_BIND(RemoteTestSite_Update_UpdateFrequency, RemoteTestSite_Update_UpdateFrequency, AUTO)
 
 
-PB_BIND(RemoteTestSite_Update_UpdateFirmware, RemoteTestSite_Update_UpdateFirmware, AUTO)
-
-
 

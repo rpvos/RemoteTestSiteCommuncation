@@ -11,10 +11,11 @@ message Update {
     optional Timestamp frequency = 2;
   }
 
-  message UpdateFirmware { optional bytes data = 1; }
+  // message UpdateFirmware { optional bytes data = 1[(nanopb).max_size = 128,
+  // (nanopb).fixed_length = true]; }
 
   oneof UpdateType {
     UpdateFrequency update_frequency = 1;
-    UpdateFirmware update_firmware = 2;
+    // UpdateFirmware update_firmware = 2;
   }
 }
