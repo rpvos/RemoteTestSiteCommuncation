@@ -9,11 +9,6 @@
 class IRemoteTestSiteController
 {
 public:
-    /// @brief Function to use when a message of type join is received
-    /// @param new_id is the new id used for this module
-    /// @return true if succesfull
-    virtual bool Join(uint64_t new_id) = 0;
-
     /// @brief Function to use when a message of type measurement is received
     /// @param type of measurement
     /// @param value of measurement
@@ -25,11 +20,6 @@ public:
     /// @param frequency of measurement in timestamp
     /// @return true if succesfull
     virtual bool UpdateFrequency(RemoteTestSite_MeasurementType type, RemoteTestSite_Timestamp frequency) = 0;
-
-    /// @brief Function to use when a message of type ping is received
-    /// @param sender_id is the id from which the ping originated
-    /// @return true if succesfull
-    virtual bool Ping(uint64_t sender_id) = 0;
 
     /// @brief Function to use when a message of type response is received
     /// @param response_code of previous message

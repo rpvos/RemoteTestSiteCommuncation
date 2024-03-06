@@ -2,4 +2,4 @@ syntax = "proto3";
 
 package RemoteTestSite;
 
-message Join { optional uint64 new_id = 1; }
+message Fin {}

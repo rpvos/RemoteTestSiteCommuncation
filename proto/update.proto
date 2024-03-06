@@ -5,11 +5,16 @@ package RemoteTestSite;
 import "proto/measurement_type.proto";
 import "proto/timestamp.proto";
 
-message UpdateFrequency {
-  optional MeasurementType type = 1;
-  optional Timestamp frequency = 2;
-}
-
 message Update {
-  oneof UpdateType { UpdateFrequency update_frequency = 1; }
+  message UpdateFrequency {
+    optional MeasurementType type = 1;
+    optional Timestamp frequency = 2;
+  }
+
+  message UpdateFirmware { optional bytes data = 1; }
+
+  oneof UpdateType {
+    UpdateFrequency update_frequency = 1;
+    UpdateFirmware update_firmware = 2;
+  }
 }

@@ -2,34 +2,55 @@ syntax = "proto3";
 
 package RemoteTestSite;
 
-import "proto/join.proto";
 import "proto/measurement.proto";
 import "proto/update.proto";
-import "proto/ping.proto";
+import "proto/syn.proto";
+import "proto/fin.proto";
+import "proto/ack.proto";
 import "proto/response.proto";
-
-/* Functions for this message*/
-enum FunctionType {
-  FUNCTION_TYPE_UNSPECIFIED = 0;
-  FUNCTION_TYPE_JOIN = 1;
-  FUNCTION_TYPE_MEASUREMENT = 2;
-  FUNCTION_TYPE_UPDATE = 3;
-  FUNCTION_TYPE_PING = 4;
-  FUNCTION_TYPE_RESPONSE = 5;
-}
 
 message Message {
   /* Id is used to determine which node is being communicated with.
   Protobuf prefers id as string but Nanopb prefers a known size */
+  /* Id of node */
   optional uint64 sender_id = 1;
+  /* Id of destination */
   optional uint64 target_id = 2;
 
-  /* Fields used with specific types */
+  /* If syn message, first message number in transmission.
+  If not syn accumulated sequence number of the first message from this
+  session */
+  optional uint64 sequence_number = 3;
+  /* Acknowledge number is secuence number +1 from sender */
+  optional uint64 acknowledge_number = 4;
+
+  /* Checksum of all previous fields (sender_id, target_id, sequence_number,
+   * acknowledge_number) */
+  optional uint32 checksum = 5;
+
+  /* All possible functions for a message */
+  // TODO: Remove function type and rely on type of function info
+  enum FunctionType {
+    FUNCTION_TYPE_UNSPECIFIED = 0;
+    /* Functions used for connection handling (opening and closing) */
+    FUNCTION_TYPE_SYN = 1;
+    FUNCTION_TYPE_ACK = 2;
+    FUNCTION_TYPE_FIN = 3;
+
+    /* Functions used for data transmission */
+    FUNCTION_TYPE_MEASUREMENT = 4;
+    FUNCTION_TYPE_UPDATE = 5;
+    FUNCTION_TYPE_RESPONSE = 6;
+  }
+  optional FunctionType function_type = 6;
+
+  /* Fields containing info for specific functions */
   oneof function_info {
-    Join join = 3;
-    Measurement measurement = 4;
-    Update update = 5;
-    Ping ping = 6;
-    Response response = 7;
+    Syn syn = 7;
+    Fin fin = 8;
+    Ack ack = 9;
+    Measurement measurement = 10;
+    Update update = 11;
+    Response response = 12;
   }
 }
