@@ -11,13 +11,14 @@
  */
 #define OUT
 
-class ProtoHandler : public IProtoHandler, private ProtoHelper
+class ProtoHandler : public IProtoHandler
 {
 private:
+    ProtoHelper *proto_helper;
     bool need_acknoledgement;
 
 public:
-    ProtoHandler(uint64_t id = 0, uint32_t random_seed = 0);
+    ProtoHandler(ProtoHelper *const proto_helper, uint32_t random_seed = 0);
     ~ProtoHandler();
 
     uint64_t GetSequenceNumber() override;

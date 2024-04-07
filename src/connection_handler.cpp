@@ -1,5 +1,4 @@
 #include "connection_handler.hpp"
-#include <Arduino.h>
 #include <stdlib.h> // stroll()
 
 bool ConnectionHandler::IsConnected()
@@ -58,7 +57,9 @@ bool ConnectionHandler::Connect(const uint64_t destination)
     size_t message_size = this->proto_handler->EncodeMessage(buffer, buffer_size, message);
     if (message_size <= 0)
     {
+
         Serial.println("Message encoding failed");
+
         return false;
     }
 
@@ -79,7 +80,9 @@ bool ConnectionHandler::Connect(const uint64_t destination)
 
     if (!communication_device->Available())
     {
+
         Serial.println("No response");
+
         return false;
     }
 
@@ -88,7 +91,9 @@ bool ConnectionHandler::Connect(const uint64_t destination)
     bool succes = proto_handler->DecodeMessage(response, buffer, size);
     if (!succes)
     {
+
         Serial.println("Message decoding error");
+
         return false;
     }
 
@@ -96,7 +101,9 @@ bool ConnectionHandler::Connect(const uint64_t destination)
     {
         if (response.acknowledge_number != proto_handler->GetSequenceNumber() - 1)
         {
+
             Serial.println("Incorrect acknowledgement");
+
             return false;
         }
     }
@@ -140,7 +147,9 @@ bool ConnectionHandler::Read()
 
     if (!succes)
     {
+
         Serial.println("Read decode error");
+
         return false;
     }
 
@@ -164,13 +173,17 @@ bool ConnectionHandler::Write(RemoteTestSite_Message message)
     size_t message_size = this->proto_handler->EncodeMessage(buffer, buffer_size, message);
     if (message_size <= 0)
     {
+
         Serial.println("Message encoding failed");
+
         return false;
     }
     size_t bytes_written = this->communication_device->Write(buffer, message_size);
     if (bytes_written <= 0)
     {
+
         Serial.println("Message could not be written to device");
+
         return false;
     }
 
@@ -183,7 +196,9 @@ void ConnectionHandler::WaitForConnection()
     // TODO: implement for base station
     if (!communication_device->Available())
     {
+
         Serial.println("No new devices");
+
         delay(1000);
         return;
     }
@@ -197,7 +212,9 @@ void ConnectionHandler::WaitForConnection()
     if (!succes)
     {
         // Decode message failed
+
         Serial.println("Decode failed");
+
         return;
     }
 
@@ -205,7 +222,9 @@ void ConnectionHandler::WaitForConnection()
 
     if (crc != message.checksum)
     {
+
         Serial.println("Crc failed");
+
         return;
     }
 
@@ -216,6 +235,7 @@ void ConnectionHandler::WaitForConnection()
         uint64_t acknowledgement_number = message.sequence_number;
 
         Serial.println("Sending acknowledgement");
+
         SendAcknowledgement(acknowledgement_number);
 
         // TODO: figure out what to do
@@ -239,13 +259,17 @@ bool ConnectionHandler::SendAcknowledgement(uint64_t acknowledgement_number)
     size_t message_size = this->proto_handler->EncodeMessage(buffer, buffer_size, message);
     if (message_size == 0)
     {
+
         Serial.println("Message encoding failed");
+
         return false;
     }
     size_t bytes_written = this->communication_device->Write(buffer, message_size);
     if (bytes_written == 0)
     {
+
         Serial.println("Message could not be written to device");
+
         return false;
     }
 

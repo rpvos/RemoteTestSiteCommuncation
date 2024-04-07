@@ -3,12 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#ifdef ARDUINO
-#include <WString.h>
-#else
-#include <string.h>
-#define String std::string_view
-#endif
+#include <Arduino.h>
 
 class ICommunicationDevice
 {

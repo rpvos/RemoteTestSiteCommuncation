@@ -63,7 +63,7 @@ bool UsrLg206PAdapter::End()
 
 int UsrLg206PAdapter::Available()
 {
-    lora.Available();
+    return lora.Available();
 }
 
 size_t UsrLg206PAdapter::Read(uint8_t *buffer, size_t buffer_size)

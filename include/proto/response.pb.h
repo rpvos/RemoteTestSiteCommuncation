@@ -12,9 +12,10 @@
 /* Enum definitions */
 typedef enum _RemoteTestSite_ResponseCode {
     RemoteTestSite_ResponseCode_RESPONSE_CODE_UNSPECIFIED = 0,
-    RemoteTestSite_ResponseCode_RESPONSE_CODE_OK = 1,
-    RemoteTestSite_ResponseCode_RESPONSE_CODE_UNEXPECTED_PARAMETER = 2,
-    RemoteTestSite_ResponseCode_RESPONSE_CODE_INVALLID_PARAMETER = 3
+    RemoteTestSite_ResponseCode_RESPONSE_CODE_SUCCES = 1,
+    RemoteTestSite_ResponseCode_RESPONSE_CODE_FAIL = 2,
+    RemoteTestSite_ResponseCode_RESPONSE_CODE_UNEXPECTED_PARAMETER = 3,
+    RemoteTestSite_ResponseCode_RESPONSE_CODE_INVALLID_PARAMETER = 4
 } RemoteTestSite_ResponseCode;
 
 /* Struct definitions */

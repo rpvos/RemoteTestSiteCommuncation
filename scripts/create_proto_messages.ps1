@@ -21,12 +21,3 @@ Get-ChildItem ./proto/ | Foreach-Object {
     Move-Item -Path $source -Destination ./src/proto 
 }
 
-
-# When using google timestamp
-# $file = './include/proto/update.pb.h'
-# $find = '#include "google/protobuf/timestamp.pb.h"'
-# $replace = '#include "proto/timestamp.pb.h"'
-# (Get-Content $file).Replace($find, $replace) | Set-Content $file
-
-
-

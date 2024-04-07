@@ -4,7 +4,7 @@
 #ifndef PB_REMOTETESTSITE_PROTO_UPDATE_PB_H_INCLUDED
 #define PB_REMOTETESTSITE_PROTO_UPDATE_PB_H_INCLUDED
 #include <pb.h>
-#include "proto/measurement_type.pb.h"
+#include "proto/measurement_info.pb.h"
 #include "proto/timestamp.pb.h"
 
 #if PB_PROTO_HEADER_VERSION != 40
@@ -13,8 +13,8 @@
 
 /* Struct definitions */
 typedef struct _RemoteTestSite_Update_UpdateFrequency {
-    bool has_type;
-    RemoteTestSite_MeasurementType type;
+    bool has_info;
+    RemoteTestSite_MeasurementInfo info;
     bool has_frequency;
     RemoteTestSite_Timestamp frequency;
 } RemoteTestSite_Update_UpdateFrequency;
@@ -33,12 +33,12 @@ extern "C" {
 
 /* Initializer values for message structs */
 #define RemoteTestSite_Update_init_default       {0, {RemoteTestSite_Update_UpdateFrequency_init_default}}
-#define RemoteTestSite_Update_UpdateFrequency_init_default {false, _RemoteTestSite_MeasurementType_MIN, false, RemoteTestSite_Timestamp_init_default}
+#define RemoteTestSite_Update_UpdateFrequency_init_default {false, _RemoteTestSite_MeasurementInfo_MIN, false, RemoteTestSite_Timestamp_init_default}
 #define RemoteTestSite_Update_init_zero          {0, {RemoteTestSite_Update_UpdateFrequency_init_zero}}
-#define RemoteTestSite_Update_UpdateFrequency_init_zero {false, _RemoteTestSite_MeasurementType_MIN, false, RemoteTestSite_Timestamp_init_zero}
+#define RemoteTestSite_Update_UpdateFrequency_init_zero {false, _RemoteTestSite_MeasurementInfo_MIN, false, RemoteTestSite_Timestamp_init_zero}
 
 /* Field tags (for use in manual encoding/decoding) */
-#define RemoteTestSite_Update_UpdateFrequency_type_tag 1
+#define RemoteTestSite_Update_UpdateFrequency_info_tag 1
 #define RemoteTestSite_Update_UpdateFrequency_frequency_tag 2
 #define RemoteTestSite_Update_update_frequency_tag 1
 
@@ -50,7 +50,7 @@ X(a, STATIC,   ONEOF,    MESSAGE,  (UpdateType,update_frequency,UpdateType.updat
 #define RemoteTestSite_Update_UpdateType_update_frequency_MSGTYPE RemoteTestSite_Update_UpdateFrequency
 
 #define RemoteTestSite_Update_UpdateFrequency_FIELDLIST(X, a) \
-X(a, STATIC,   OPTIONAL, UENUM,    type,              1) \
+X(a, STATIC,   OPTIONAL, UENUM,    info,              1) \
 X(a, STATIC,   OPTIONAL, MESSAGE,  frequency,         2)
 #define RemoteTestSite_Update_UpdateFrequency_CALLBACK NULL
 #define RemoteTestSite_Update_UpdateFrequency_DEFAULT NULL

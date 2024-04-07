@@ -9,6 +9,7 @@
 #include "proto/syn.pb.h"
 #include "proto/fin.pb.h"
 #include "proto/ack.pb.h"
+#include "proto/command.pb.h"
 #include "proto/response.pb.h"
 
 #if PB_PROTO_HEADER_VERSION != 40
@@ -20,18 +21,18 @@ typedef struct _RemoteTestSite_Message { /* Id is used to determine which node i
 Protobuf prefers id as string but Nanopb prefers a known size */
     /* Id of node */
     bool has_sender_id;
-    uint64_t sender_id;
+    uint32_t sender_id;
     /* Id of destination */
     bool has_target_id;
-    uint64_t target_id;
+    uint32_t target_id;
     /* If syn message, first message number in transmission.
 If not syn accumulated sequence number of the first message from this
 session */
     bool has_sequence_number;
-    uint64_t sequence_number;
+    uint32_t sequence_number;
     /* Acknowledge number is secuence number +1 from sender */
     bool has_acknowledge_number;
-    uint64_t acknowledge_number;
+    uint32_t acknowledge_number;
     /* Checksum of all previous fields (sender_id, target_id, sequence_number,
  acknowledge_number) */
     bool has_checksum;
@@ -43,6 +44,7 @@ session */
         RemoteTestSite_Ack ack;
         RemoteTestSite_Measurement measurement;
         RemoteTestSite_Update update;
+        RemoteTestSite_Command command;
         RemoteTestSite_Response response;
     } function_info;
 } RemoteTestSite_Message;
@@ -62,25 +64,27 @@ extern "C" {
 #define RemoteTestSite_Message_sequence_number_tag 3
 #define RemoteTestSite_Message_acknowledge_number_tag 4
 #define RemoteTestSite_Message_checksum_tag      5
-#define RemoteTestSite_Message_syn_tag           7
-#define RemoteTestSite_Message_fin_tag           8
-#define RemoteTestSite_Message_ack_tag           9
-#define RemoteTestSite_Message_measurement_tag   10
-#define RemoteTestSite_Message_update_tag        11
+#define RemoteTestSite_Message_syn_tag           6
+#define RemoteTestSite_Message_fin_tag           7
+#define RemoteTestSite_Message_ack_tag           8
+#define RemoteTestSite_Message_measurement_tag   9
+#define RemoteTestSite_Message_update_tag        10
+#define RemoteTestSite_Message_command_tag       11
 #define RemoteTestSite_Message_response_tag      12
 
 /* Struct field encoding specification for nanopb */
 #define RemoteTestSite_Message_FIELDLIST(X, a) \
-X(a, STATIC,   OPTIONAL, UINT64,   sender_id,         1) \
-X(a, STATIC,   OPTIONAL, UINT64,   target_id,         2) \
-X(a, STATIC,   OPTIONAL, UINT64,   sequence_number,   3) \
-X(a, STATIC,   OPTIONAL, UINT64,   acknowledge_number,   4) \
+X(a, STATIC,   OPTIONAL, UINT32,   sender_id,         1) \
+X(a, STATIC,   OPTIONAL, UINT32,   target_id,         2) \
+X(a, STATIC,   OPTIONAL, UINT32,   sequence_number,   3) \
+X(a, STATIC,   OPTIONAL, UINT32,   acknowledge_number,   4) \
 X(a, STATIC,   OPTIONAL, UINT32,   checksum,          5) \
-X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,syn,function_info.syn),   7) \
-X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,fin,function_info.fin),   8) \
-X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,ack,function_info.ack),   9) \
-X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,measurement,function_info.measurement),  10) \
-X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,update,function_info.update),  11) \
+X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,syn,function_info.syn),   6) \
+X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,fin,function_info.fin),   7) \
+X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,ack,function_info.ack),   8) \
+X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,measurement,function_info.measurement),   9) \
+X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,update,function_info.update),  10) \
+X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,command,function_info.command),  11) \
 X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,response,function_info.response),  12)
 #define RemoteTestSite_Message_CALLBACK NULL
 #define RemoteTestSite_Message_DEFAULT NULL
@@ -89,6 +93,7 @@ X(a, STATIC,   ONEOF,    MESSAGE,  (function_info,response,function_info.respons
 #define RemoteTestSite_Message_function_info_ack_MSGTYPE RemoteTestSite_Ack
 #define RemoteTestSite_Message_function_info_measurement_MSGTYPE RemoteTestSite_Measurement
 #define RemoteTestSite_Message_function_info_update_MSGTYPE RemoteTestSite_Update
+#define RemoteTestSite_Message_function_info_command_MSGTYPE RemoteTestSite_Command
 #define RemoteTestSite_Message_function_info_response_MSGTYPE RemoteTestSite_Response
 
 extern const pb_msgdesc_t RemoteTestSite_Message_msg;
@@ -98,7 +103,7 @@ extern const pb_msgdesc_t RemoteTestSite_Message_msg;
 
 /* Maximum encoded size of messages (where known) */
 #define REMOTETESTSITE_PROTO_BASE_MESSAGE_PB_H_MAX_SIZE RemoteTestSite_Message_size
-#define RemoteTestSite_Message_size              78
+#define RemoteTestSite_Message_size              59
 
 #ifdef __cplusplus
 } /* extern "C" */

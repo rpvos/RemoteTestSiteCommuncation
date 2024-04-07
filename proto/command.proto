@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package RemoteTestSite;
+
+import "proto/timestamp.proto";
+
+message Command {
+  enum Commands {
+    COMMAND_UNSPECIFIED = 0;
+    COMMAND_ACTIVATE_PUMP = 1;
+  }
+
+  optional Timestamp duration = 1;
+  optional Commands command = 2;
+}

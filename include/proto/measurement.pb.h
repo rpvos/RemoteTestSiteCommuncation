@@ -4,7 +4,7 @@
 #ifndef PB_REMOTETESTSITE_PROTO_MEASUREMENT_PB_H_INCLUDED
 #define PB_REMOTETESTSITE_PROTO_MEASUREMENT_PB_H_INCLUDED
 #include <pb.h>
-#include "proto/measurement_type.pb.h"
+#include "proto/measurement_info.pb.h"
 #include "proto/timestamp.pb.h"
 
 #if PB_PROTO_HEADER_VERSION != 40
@@ -13,12 +13,12 @@
 
 /* Struct definitions */
 typedef struct _RemoteTestSite_Measurement {
-    bool has_type;
-    RemoteTestSite_MeasurementType type;
-    bool has_value;
-    float value;
     bool has_timestamp;
     RemoteTestSite_Timestamp timestamp;
+    bool has_value;
+    uint32_t value;
+    bool has_info;
+    RemoteTestSite_MeasurementInfo info;
 } RemoteTestSite_Measurement;
 
 
@@ -27,19 +27,19 @@ extern "C" {
 #endif
 
 /* Initializer values for message structs */
-#define RemoteTestSite_Measurement_init_default  {false, _RemoteTestSite_MeasurementType_MIN, false, 0, false, RemoteTestSite_Timestamp_init_default}
-#define RemoteTestSite_Measurement_init_zero     {false, _RemoteTestSite_MeasurementType_MIN, false, 0, false, RemoteTestSite_Timestamp_init_zero}
+#define RemoteTestSite_Measurement_init_default  {false, RemoteTestSite_Timestamp_init_default, false, 0, false, _RemoteTestSite_MeasurementInfo_MIN}
+#define RemoteTestSite_Measurement_init_zero     {false, RemoteTestSite_Timestamp_init_zero, false, 0, false, _RemoteTestSite_MeasurementInfo_MIN}
 
 /* Field tags (for use in manual encoding/decoding) */
-#define RemoteTestSite_Measurement_type_tag      1
+#define RemoteTestSite_Measurement_timestamp_tag 1
 #define RemoteTestSite_Measurement_value_tag     2
-#define RemoteTestSite_Measurement_timestamp_tag 3
+#define RemoteTestSite_Measurement_info_tag      3
 
 /* Struct field encoding specification for nanopb */
 #define RemoteTestSite_Measurement_FIELDLIST(X, a) \
-X(a, STATIC,   OPTIONAL, UENUM,    type,              1) \
-X(a, STATIC,   OPTIONAL, FLOAT,    value,             2) \
-X(a, STATIC,   OPTIONAL, MESSAGE,  timestamp,         3)
+X(a, STATIC,   OPTIONAL, MESSAGE,  timestamp,         1) \
+X(a, STATIC,   OPTIONAL, UINT32,   value,             2) \
+X(a, STATIC,   OPTIONAL, UENUM,    info,              3)
 #define RemoteTestSite_Measurement_CALLBACK NULL
 #define RemoteTestSite_Measurement_DEFAULT NULL
 #define RemoteTestSite_Measurement_timestamp_MSGTYPE RemoteTestSite_Timestamp
@@ -51,7 +51,7 @@ extern const pb_msgdesc_t RemoteTestSite_Measurement_msg;
 
 /* Maximum encoded size of messages (where known) */
 #define REMOTETESTSITE_PROTO_MEASUREMENT_PB_H_MAX_SIZE RemoteTestSite_Measurement_size
-#define RemoteTestSite_Measurement_size          26
+#define RemoteTestSite_Measurement_size          27
 
 #ifdef __cplusplus
 } /* extern "C" */

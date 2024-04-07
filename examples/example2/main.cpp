@@ -8,7 +8,8 @@
 
 RemoteTestSiteBasestation message_handler = RemoteTestSiteBasestation();
 UsrLg206PAdapter communication_device = UsrLg206PAdapter();
-ProtoHandler proto_handler = ProtoHandler();
+ProtoHelper proto_helper = ProtoHelper();
+ProtoHandler proto_handler = ProtoHandler(&proto_helper);
 
 ConnectionHandler connection_handler = ConnectionHandler(&message_handler, &communication_device, &proto_handler);
 

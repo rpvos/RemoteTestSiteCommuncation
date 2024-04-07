@@ -7,50 +7,36 @@ import "proto/update.proto";
 import "proto/syn.proto";
 import "proto/fin.proto";
 import "proto/ack.proto";
+import "proto/command.proto";
 import "proto/response.proto";
 
 message Message {
   /* Id is used to determine which node is being communicated with.
   Protobuf prefers id as string but Nanopb prefers a known size */
   /* Id of node */
-  optional uint64 sender_id = 1;
+  optional uint32 sender_id = 1;
   /* Id of destination */
-  optional uint64 target_id = 2;
+  optional uint32 target_id = 2;
 
   /* If syn message, first message number in transmission.
   If not syn accumulated sequence number of the first message from this
   session */
-  optional uint64 sequence_number = 3;
+  optional uint32 sequence_number = 3;
   /* Acknowledge number is secuence number +1 from sender */
-  optional uint64 acknowledge_number = 4;
+  optional uint32 acknowledge_number = 4;
 
   /* Checksum of all previous fields (sender_id, target_id, sequence_number,
    * acknowledge_number) */
   optional uint32 checksum = 5;
 
-  /* All possible functions for a message */
-  // TODO: Remove function type and rely on type of function info
-  // enum FunctionType {
-  //   FUNCTION_TYPE_UNSPECIFIED = 0;
-  //   /* Functions used for connection handling (opening and closing) */
-  //   FUNCTION_TYPE_SYN = 1;
-  //   FUNCTION_TYPE_ACK = 2;
-  //   FUNCTION_TYPE_FIN = 3;
-
-  //   /* Functions used for data transmission */
-  //   FUNCTION_TYPE_MEASUREMENT = 4;
-  //   FUNCTION_TYPE_UPDATE = 5;
-  //   FUNCTION_TYPE_RESPONSE = 6;
-  // }
-  // optional FunctionType function_type = 6;
-
   /* Fields containing info for specific functions */
   oneof function_info {
-    Syn syn = 7;
-    Fin fin = 8;
-    Ack ack = 9;
-    Measurement measurement = 10;
-    Update update = 11;
+    Syn syn = 6;
+    Fin fin = 7;
+    Ack ack = 8;
+    Measurement measurement = 9;
+    Update update = 10;
+    Command command = 11;
     Response response = 12;
   }
 }

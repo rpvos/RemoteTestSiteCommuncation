@@ -21,7 +21,13 @@ ProtoHelper::~ProtoHelper()
 uint64_t ProtoHelper::GetNewSequenceNumber()
 {
     // Construct long long random number
-    return random() << sizeof(long) | random();
+    uint64_t value = 0;
+    for (size_t i = 0; i < sizeof(value); i++)
+    {
+        value |= rand() << 8 * (i + 1);
+    }
+
+    return value;
 }
 
 pb_ostream_t ProtoHelper::CreateOutputStream(uint8_t *const message_buffer, const size_t message_buffer_size)
@@ -64,7 +70,7 @@ bool ProtoHelper::AddCrc(uint8_t *buffer, const uint8_t buffer_size, RemoteTestS
     return true;
 }
 
-bool ProtoHelper::EncodeMeasurement(pb_ostream_t *const stream, const RemoteTestSite_MeasurementType type, const float value)
+bool ProtoHelper::EncodeMeasurement(pb_ostream_t *const stream, const RemoteTestSite_MeasurementInfo type, const float value)
 {
     RemoteTestSite_Message message = RemoteTestSite_Message_init_zero;
     message.which_function_info = RemoteTestSite_Message_measurement_tag;
@@ -72,15 +78,15 @@ bool ProtoHelper::EncodeMeasurement(pb_ostream_t *const stream, const RemoteTest
 
     /* Create measurement message type. */
     RemoteTestSite_Measurement measurement = RemoteTestSite_Measurement_init_zero;
-    measurement.type = type;
-    measurement.has_type = true;
+    measurement.info = type;
+    measurement.has_info = true;
     measurement.value = value;
     measurement.has_value = true;
 
     return EncodeUnionmessage(stream, RemoteTestSite_Measurement_fields, &measurement);
 }
 
-bool ProtoHelper::EncodeUpdate(pb_ostream_t *const stream, const RemoteTestSite_MeasurementType type, const RemoteTestSite_Timestamp frequency)
+bool ProtoHelper::EncodeUpdate(pb_ostream_t *const stream, const RemoteTestSite_MeasurementInfo type, const RemoteTestSite_Timestamp frequency)
 {
     RemoteTestSite_Message message = RemoteTestSite_Message_init_zero;
     message.which_function_info = RemoteTestSite_Message_update_tag;
@@ -89,8 +95,8 @@ bool ProtoHelper::EncodeUpdate(pb_ostream_t *const stream, const RemoteTestSite_
     /* Create update message type. */
     RemoteTestSite_Update update = RemoteTestSite_Update_init_zero;
     RemoteTestSite_Update_UpdateFrequency update_frequency = RemoteTestSite_Update_UpdateFrequency_init_zero;
-    update_frequency.type = type;
-    update_frequency.has_type = true;
+    update_frequency.info = type;
+    update_frequency.has_info = true;
     update_frequency.frequency = frequency;
     update_frequency.has_frequency = true;
     EncodeUnionmessage(stream, RemoteTestSite_Update_UpdateFrequency_fields, &update_frequency);

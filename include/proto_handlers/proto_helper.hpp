@@ -19,8 +19,8 @@ public:
     uint64_t GetNewSequenceNumber();
 
     pb_ostream_t CreateOutputStream(uint8_t *const message_buffer, const size_t message_buffer_size);
-    bool EncodeMeasurement(pb_ostream_t *const stream, const RemoteTestSite_MeasurementType type, const float value);
-    bool EncodeUpdate(pb_ostream_t *const stream, const RemoteTestSite_MeasurementType type, const RemoteTestSite_Timestamp frequency);
+    bool EncodeMeasurement(pb_ostream_t *const stream, const RemoteTestSite_MeasurementInfo type, const float value);
+    bool EncodeUpdate(pb_ostream_t *const stream, const RemoteTestSite_MeasurementInfo type, const RemoteTestSite_Timestamp frequency);
     bool EncodeResponse(pb_ostream_t *const stream, const RemoteTestSite_ResponseCode code);
     bool EncodeUnionmessage(pb_ostream_t *const stream, const pb_msgdesc_t *messagetype, void *const message);
     bool EncodeBaseMessage(pb_ostream_t *const stream, RemoteTestSite_Message &message);

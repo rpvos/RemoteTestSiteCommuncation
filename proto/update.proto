@@ -2,12 +2,12 @@ syntax = "proto3";
 
 package RemoteTestSite;
 
-import "proto/measurement_type.proto";
+import "proto/measurement_info.proto";
 import "proto/timestamp.proto";
 
 message Update {
   message UpdateFrequency {
-    optional MeasurementType type = 1;
+    optional MeasurementInfo info = 1;
     optional Timestamp frequency = 2;
   }
 
