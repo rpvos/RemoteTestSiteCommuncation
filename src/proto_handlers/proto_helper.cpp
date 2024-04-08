@@ -21,13 +21,7 @@ ProtoHelper::~ProtoHelper()
 uint64_t ProtoHelper::GetNewSequenceNumber()
 {
     // Construct long long random number
-    uint64_t value = 0;
-    for (size_t i = 0; i < sizeof(value); i++)
-    {
-        value |= rand() << 8 * (i + 1);
-    }
-
-    return value;
+    return ((uint64_t)rand() << (sizeof(uint32_t) * 8)) | rand();
 }
 
 pb_ostream_t ProtoHelper::CreateOutputStream(uint8_t *const message_buffer, const size_t message_buffer_size)
