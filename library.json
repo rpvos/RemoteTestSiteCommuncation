@@ -27,6 +27,7 @@
     "examples": [],
     "dependencies": {
         "nanopb/Nanopb": "^0.4.8",
+        "USR-LG206-P": "https://github.com/rpvos/USR-LG206-P.git",
         "Crc": "https://github.com/rpvos/Crc.git"
     },
     "export": {},
