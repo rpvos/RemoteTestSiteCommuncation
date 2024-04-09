@@ -4,6 +4,14 @@
 #include <vh400_helper.hpp>
 #include <murata_soil_sensor_helper.h>
 
+#ifndef kOperatingVoltage
+#define kOperatingVoltage 3
+#endif
+
+#ifndef kAdcBits
+#define kAdcBits 10
+#endif
+
 RemoteTestSiteBasestation::RemoteTestSiteBasestation(IConnectionHandler *const connection_handler)
 {
     this->connection_handler = connection_handler;
@@ -83,12 +91,12 @@ bool RemoteTestSiteBasestation::Measurement(RemoteTestSite_MeasurementInfo type,
     {
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_THERM200_TEMPERATURE:
         Serial.print("THERM200\tTemperature: ");
-        Serial.println(Therm200Helper::CalculateTemperature(value));
+        Serial.println(Therm200Helper::CalculateTemperature(value, kOperatingVoltage, kAdcBits));
         break;
 
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_VH400_VWC:
         Serial.print("VH400\tVWC: ");
-        Serial.println(Vh400Helper::CalculateVwc(value));
+        Serial.println(Vh400Helper::CalculateVwc(value, kOperatingVoltage, kAdcBits));
         break;
 
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_TEMPERATURE:
