@@ -72,7 +72,7 @@ bool ConnectionHandler::Connect(const uint64_t destination)
 
     // Receive ACK message
     unsigned long now = millis();
-    unsigned long time_out = 2000;
+    unsigned long time_out = 5000;
     while (!communication_device->Available() && now + time_out > millis())
     {
         delay(100);
@@ -97,20 +97,30 @@ bool ConnectionHandler::Connect(const uint64_t destination)
         return false;
     }
 
+    // Check acknowledgement
     if (response.has_acknowledge_number)
     {
-        if (response.acknowledge_number != proto_handler->GetSequenceNumber() - 1)
+        if (response.acknowledge_number != (uint32_t)(proto_handler->GetSequenceNumber() - 1))
         {
-
             Serial.println("Incorrect acknowledgement");
+            Serial.println((int)response.acknowledge_number);
+            Serial.println((int)proto_handler->GetSequenceNumber());
 
             return false;
         }
     }
 
     // Receive SYN message
-
-    // Send ACK message
+    if (response.which_function_info == RemoteTestSite_Message_syn_tag)
+    {
+        // Send ACK message
+        RemoteTestSite_Message ack_message = RemoteTestSite_Message_init_zero;
+        ack_message.has_acknowledge_number = true;
+        ack_message.acknowledge_number = response.sequence_number;
+        ack_message.which_function_info = RemoteTestSite_Message_ack_tag;
+        bool ack_is_send = Write(ack_message);
+        // Can check for send confirmation
+    }
 
     this->is_connected = true;
     return true;
