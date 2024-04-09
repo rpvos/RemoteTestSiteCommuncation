@@ -1,5 +1,8 @@
 #include "message_handlers/RemoteTestSiteBasestation.hpp"
 #include <Arduino.h>
+#include <therm200_helper.hpp>
+#include <vh400_helper.hpp>
+#include <murata_soil_sensor_helper.h>
 
 RemoteTestSiteBasestation::RemoteTestSiteBasestation(IConnectionHandler *const connection_handler)
 {
@@ -76,6 +79,38 @@ bool RemoteTestSiteBasestation::Syn(const RemoteTestSite_Message &message)
 
 bool RemoteTestSiteBasestation::Measurement(RemoteTestSite_MeasurementInfo type, int32_t value)
 {
+    switch (type)
+    {
+    case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_THERM200_TEMPERATURE:
+        Serial.print("THERM200\tTemperature: ");
+        Serial.println(Therm200Helper::CalculateTemperature(value));
+        break;
+
+    case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_VH400_VWC:
+        Serial.print("VH400\tVWC: ");
+        Serial.println(Vh400Helper::CalculateVwc(value));
+        break;
+
+    case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_TEMPERATURE:
+        Serial.print("Murata soil sensor\tTemperature: ");
+        Serial.println(MurataSoilSensorHelper::CalculateTemperature(value));
+        break;
+    case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_VWC:
+        Serial.print("Murata soil sensor\tVWC: ");
+        Serial.println(MurataSoilSensorHelper::CalculateVWC(value));
+        break;
+    case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_EC_BULK:
+        Serial.print("Murata soil sensor\tEC bulk: ");
+        Serial.println(MurataSoilSensorHelper::CalculateECBulk(value));
+        break;
+    case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_EC_PORE:
+        Serial.print("Murata soil sensor\tEC pore: ");
+        Serial.println(MurataSoilSensorHelper::CalculateECPore(value));
+        break;
+
+    default:
+        break;
+    }
     Serial.print("Measurement of type: ");
     Serial.println((int)type);
     Serial.print("Value: ");
