@@ -35,6 +35,10 @@ void RemoteTestSiteBasestation::HandleMessage(const RemoteTestSite_Message &mess
     case RemoteTestSite_Message_syn_tag:
         Syn(message);
         break;
+    case RemoteTestSite_Message_ack_tag:
+        // Message was acknowledged
+        // TODO: remove message from not acknowledged queue
+        break;
     case RemoteTestSite_Message_measurement_tag:
         if (message.function_info.measurement.has_info && message.function_info.measurement.has_value)
         {
@@ -90,36 +94,36 @@ bool RemoteTestSiteBasestation::Measurement(RemoteTestSite_MeasurementInfo type,
     switch (type)
     {
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_THERM200_TEMPERATURE:
-        Serial.print("THERM200\tTemperature: ");
+        Serial.print(",THERM200,Temperature,");
         Serial.println(Therm200Helper::CalculateTemperature(value, kOperatingVoltage, kAdcBits));
         break;
 
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_VH400_VWC:
-        Serial.print("VH400\tVWC: ");
+        Serial.print(",VH400,VWC,");
         Serial.println(Vh400Helper::CalculateVwc(value, kOperatingVoltage, kAdcBits));
         break;
 
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_TEMPERATURE:
-        Serial.print("Murata soil sensor\tTemperature: ");
+        Serial.print(",Murata soil sensor,Temperature,");
         Serial.println(MurataSoilSensorHelper::CalculateTemperature(value));
         break;
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_VWC:
-        Serial.print("Murata soil sensor\tVWC: ");
+        Serial.print(",Murata soil sensor,VWC,");
         Serial.println(MurataSoilSensorHelper::CalculateVWC(value));
         break;
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_EC_BULK:
-        Serial.print("Murata soil sensor\tEC bulk: ");
+        Serial.print(",Murata soil sensor,EC bulk,");
         Serial.println(MurataSoilSensorHelper::CalculateECBulk(value));
         break;
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_EC_PORE:
-        Serial.print("Murata soil sensor\tEC pore: ");
+        Serial.print(",Murata soil sensor,EC pore,");
         Serial.println(MurataSoilSensorHelper::CalculateECPore(value));
         break;
 
     default:
-        Serial.print("Measurement of type: ");
-        Serial.println((int)type);
-        Serial.print("Value: ");
+        Serial.print(",Unknown type,");
+        Serial.print((int)type);
+        Serial.print(",");
         Serial.println((float)value);
         break;
     }
