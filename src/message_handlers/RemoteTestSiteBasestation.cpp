@@ -95,36 +95,36 @@ bool RemoteTestSiteBasestation::Measurement(RemoteTestSite_MeasurementInfo type,
     {
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_THERM200_TEMPERATURE:
         Serial.print(",THERM200,Temperature,");
-        Serial.println(Therm200Helper::CalculateTemperature(value, kOperatingVoltage, kAdcBits));
+        Serial.print(Therm200Helper::CalculateTemperature(value, kOperatingVoltage, kAdcBits));
         break;
 
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_VH400_VWC:
         Serial.print(",VH400,VWC,");
-        Serial.println(Vh400Helper::CalculateVwc(value, kOperatingVoltage, kAdcBits));
+        Serial.print(Vh400Helper::CalculateVwc(value, kOperatingVoltage, kAdcBits));
         break;
 
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_TEMPERATURE:
         Serial.print(",Murata soil sensor,Temperature,");
-        Serial.println(MurataSoilSensorHelper::CalculateTemperature(value));
+        Serial.print(MurataSoilSensorHelper::CalculateTemperature(value));
         break;
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_VWC:
         Serial.print(",Murata soil sensor,VWC,");
-        Serial.println(MurataSoilSensorHelper::CalculateVWC(value));
+        Serial.print(MurataSoilSensorHelper::CalculateVWC(value));
         break;
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_EC_BULK:
         Serial.print(",Murata soil sensor,EC bulk,");
-        Serial.println(MurataSoilSensorHelper::CalculateECBulk(value));
+        Serial.print(MurataSoilSensorHelper::CalculateECBulk(value));
         break;
     case RemoteTestSite_MeasurementInfo_MEASUREMENT_INFO_MURATA_EC_PORE:
         Serial.print(",Murata soil sensor,EC pore,");
-        Serial.println(MurataSoilSensorHelper::CalculateECPore(value));
+        Serial.print(MurataSoilSensorHelper::CalculateECPore(value));
         break;
 
     default:
         Serial.print(",Unknown type,");
         Serial.print((int)type);
         Serial.print(",");
-        Serial.println((float)value);
+        Serial.print((float)value);
         break;
     }
     return true;
