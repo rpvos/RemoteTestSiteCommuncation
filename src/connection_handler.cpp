@@ -148,7 +148,7 @@ size_t ConnectionHandler::Available()
 bool ConnectionHandler::Read()
 {
     const size_t buffer_size = 128;
-    uint8_t buffer[buffer_size];
+    uint8_t buffer[buffer_size] = {0};
     size_t size = communication_device->Read(buffer, buffer_size);
 
     // Decode message
@@ -157,9 +157,7 @@ bool ConnectionHandler::Read()
 
     if (!succes)
     {
-
         Serial.println("Read decode error");
-
         return false;
     }
 
