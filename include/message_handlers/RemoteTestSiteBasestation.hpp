@@ -7,7 +7,8 @@
 class RemoteTestSiteBasestation : public IMessageHandler
 {
 public:
-    RemoteTestSiteBasestation(IConnectionHandler *const connection_handler);
+    RemoteTestSiteBasestation(IConnectionHandler *const connection_handler = nullptr);
+    void SetConnectionHandler(IConnectionHandler *const connection_handler);
 
     void HandleMessage(const RemoteTestSite_Message &message) override;
 
