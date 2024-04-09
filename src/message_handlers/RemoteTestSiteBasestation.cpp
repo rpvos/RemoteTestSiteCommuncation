@@ -3,6 +3,7 @@
 #include <therm200_helper.hpp>
 #include <vh400_helper.hpp>
 #include <murata_soil_sensor_helper.h>
+#include "RemoteTestSiteBasestation.hpp"
 
 RemoteTestSiteBasestation::RemoteTestSiteBasestation(IConnectionHandler *const connection_handler)
 {
@@ -154,4 +155,9 @@ bool RemoteTestSiteBasestation::UnknownMessageType(pb_size_t which_function_info
     Serial.println((int)which_function_info);
 
     return true;
+}
+
+void RemoteTestSiteBasestation::SetConnectionHandler(IConnectionHandler *const connection_handler)
+{
+    this->connection_handler = connection_handler;
 }
