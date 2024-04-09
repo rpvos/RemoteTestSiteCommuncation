@@ -1,7 +1,12 @@
 #include "message_handlers/RemoteTestSiteBasestation.hpp"
 #include <Arduino.h>
 
-void RemoteTestSiteBasestation::HandleMessage(RemoteTestSite_Message message)
+RemoteTestSiteBasestation::RemoteTestSiteBasestation(IConnectionHandler *const connection_handler)
+{
+    this->connection_handler = connection_handler;
+}
+
+void RemoteTestSiteBasestation::HandleMessage(const RemoteTestSite_Message &message)
 {
     /* Check if message is meant for this node */
     if (message.has_target_id)
@@ -16,6 +21,9 @@ void RemoteTestSiteBasestation::HandleMessage(RemoteTestSite_Message message)
 
     switch (message.which_function_info)
     {
+    case RemoteTestSite_Message_syn_tag:
+        Syn(message);
+        break;
     case RemoteTestSite_Message_measurement_tag:
         if (message.function_info.measurement.has_info && message.function_info.measurement.has_value)
         {
@@ -39,6 +47,31 @@ void RemoteTestSiteBasestation::HandleMessage(RemoteTestSite_Message message)
         UnknownMessageType(message.which_function_info);
         break;
     }
+}
+
+bool RemoteTestSiteBasestation::Syn(const RemoteTestSite_Message &message)
+{
+    RemoteTestSite_Message response = RemoteTestSite_Message_init_zero;
+    response.which_function_info = RemoteTestSite_Message_syn_tag;
+    response.has_acknowledge_number = true;
+    response.acknowledge_number = message.sequence_number;
+    this->connection_handler->Write(response);
+
+    // TODO: improve performance to do other things while waiting
+    // This can be done in other handle of message
+    {
+        while (!this->connection_handler->Available())
+        {
+            delay(100);
+        }
+
+        if (this->connection_handler->Available())
+        {
+            this->connection_handler->Read();
+        }
+    }
+
+    return true;
 }
 
 bool RemoteTestSiteBasestation::Measurement(RemoteTestSite_MeasurementInfo type, int32_t value)

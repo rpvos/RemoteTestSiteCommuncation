@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-void RemoteTestSiteSensorNode::HandleMessage(RemoteTestSite_Message message)
+void RemoteTestSiteSensorNode::HandleMessage(const RemoteTestSite_Message &message)
 {
     /* Check if message is meant for this node */
     if (message.has_target_id)

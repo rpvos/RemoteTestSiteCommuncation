@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include "proto/base_message.pb.h"
+#include "interfaces/i_connection_handler.hpp"
 #include "interfaces/i_message_handler.hpp"
 #include "interfaces/i_communication_device.hpp"
 #include "interfaces/i_proto_handler.hpp"
@@ -12,7 +13,7 @@
  * Connection handler used for beginning connection, sending data and ending connection.
  *
  */
-class ConnectionHandler
+class ConnectionHandler : public IConnectionHandler
 {
 private:
     IMessageHandler *message_handler;
@@ -30,9 +31,9 @@ public:
     bool Begin();
     bool Connect(const uint64_t destination);
     bool End();
-    size_t Available();
-    bool Read();
-    bool Write(RemoteTestSite_Message message);
+    size_t Available() override;
+    bool Read() override;
+    bool Write(RemoteTestSite_Message message) override;
     void WaitForConnection();
     bool SendAcknowledgement(uint64_t acknowledgement_number);
 };

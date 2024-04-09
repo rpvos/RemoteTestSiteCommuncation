@@ -6,7 +6,7 @@
 class RemoteTestSiteSensorNode : public IMessageHandler
 {
 public:
-    void HandleMessage(RemoteTestSite_Message message) override;
+    void HandleMessage(const RemoteTestSite_Message &message) override;
 
 private:
     bool Measurement(RemoteTestSite_MeasurementInfo type, int32_t value);

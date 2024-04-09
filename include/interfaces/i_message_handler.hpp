@@ -7,7 +7,7 @@ class IMessageHandler
 {
 private:
 public:
-    virtual void HandleMessage(RemoteTestSite_Message message) = 0;
+    virtual void HandleMessage(const RemoteTestSite_Message &message) = 0;
 };
 
 #endif // I_MESSAGE_HANDLER_HPP_
