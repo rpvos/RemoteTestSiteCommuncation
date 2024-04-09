@@ -13,7 +13,6 @@ bool UsrLg206PAdapter::Begin()
 {
     if (lora.BeginAtMode() != LoRaErrorCode::kSucces)
     {
-        Serial.println('1');
         return false;
     }
 
@@ -22,32 +21,26 @@ bool UsrLg206PAdapter::Begin()
     {
         if (lora.SetWorkMode(LoRaSettings::WorkMode::kWorkModeTransparent) != LoRaErrorCode::kSucces)
         {
-            Serial.println('2');
             break;
         }
         if (lora.SetAirRateLevel(LoRaSettings::LoRaAirRateLevel::kLoRaAirRateLevel268) != LoRaErrorCode::kSucces)
         {
-            Serial.println('3');
             break;
         }
         if (lora.SetChannel(40) != LoRaErrorCode::kSucces)
         {
-            Serial.println('4');
             break;
         }
         if (lora.SetDestinationAddress(1) != LoRaErrorCode::kSucces)
         {
-            Serial.println('5');
             break;
         }
         if (lora.GetNodeId(this->id) != LoRaErrorCode::kSucces)
         {
-            Serial.println('6');
             break;
         }
         if (lora.EndAtMode() != LoRaErrorCode::kSucces)
         {
-            Serial.println('7');
             break;
         }
         code = LoRaErrorCode::kSucces;

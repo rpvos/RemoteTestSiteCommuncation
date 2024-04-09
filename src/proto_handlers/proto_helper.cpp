@@ -50,7 +50,7 @@ bool ProtoHelper::EncodeBaseMessage(pb_ostream_t *const stream, RemoteTestSite_M
     if (!crc)
     {
         // Crc was not created succesfully
-        return 0;
+        return false;
     }
 
     /* Encode the message. */
