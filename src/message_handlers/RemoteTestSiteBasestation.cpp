@@ -117,12 +117,12 @@ bool RemoteTestSiteBasestation::Measurement(RemoteTestSite_MeasurementInfo type,
         break;
 
     default:
+        Serial.print("Measurement of type: ");
+        Serial.println((int)type);
+        Serial.print("Value: ");
+        Serial.println((float)value);
         break;
     }
-    Serial.print("Measurement of type: ");
-    Serial.println((int)type);
-    Serial.print("Value: ");
-    Serial.println((float)value);
     return true;
 }
 
