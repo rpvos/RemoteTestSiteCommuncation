@@ -3,7 +3,6 @@
 #include <therm200_helper.hpp>
 #include <vh400_helper.hpp>
 #include <murata_soil_sensor_helper.h>
-#include "RemoteTestSiteBasestation.hpp"
 
 RemoteTestSiteBasestation::RemoteTestSiteBasestation(IConnectionHandler *const connection_handler)
 {
